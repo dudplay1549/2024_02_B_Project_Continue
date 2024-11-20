@@ -5,12 +5,42 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    private SurvivalStats SurvivalStats;                        //클래스 선언
+
     //각각의 아이템 개수를 저장하는 변수
     public int crystalCount = 0;                //크리스탈 개수
     public int plantCount = 0;                 //식물 개수
     public int bushCount = 0;                   //수풀 개수
     public int treeCount = 0;                   //나무 개수
 
+    public void Start()
+    {
+        SurvivalStats = GetComponent<SurvivalStats>();
+    }
+
+    public void UseItem(ItemType itemType)
+    {
+        if (GetItemCount(itemType) <= 0)             //해당 아이템이 있는지 확인
+        {
+            return;
+        }
+
+        switch (itemType)                           //아이템 타입에 따른 효과 적용 
+        {
+            case ItemType.VegetableStew:
+                RemoveItem(ItemType.VegetableStew, 1);
+                SurvivalStats.EatFood(RecipeList.KitchenRecipes[0].hungerRestoreAmount);
+                break;
+            case ItemType.FruitSalad:
+                RemoveItem(ItemType.FruitSalad, 1);
+                SurvivalStats.EatFood(RecipeList.KitchenRecipes[1].hungerRestoreAmount);
+                break;
+            case ItemType.RepairKit:
+                RemoveItem(ItemType.RepairKit, 1);
+                SurvivalStats.EatFood(RecipeList.KitchenRecipes[0].hungerRestoreAmount);
+                break;
+        }                           
+    }
 
     //여러 아이템을 한꺼번에 획득
     public void AddItem(ItemType itemType, int amount)
@@ -90,6 +120,7 @@ public class PlayerInventory : MonoBehaviour
                 break;
         }
         Debug.Log($"{itemType} 아이템이 부족합니다.");
+        return false;
     } 
 
     //특정 아이템의 현재 개수를 반환 하는 함수
@@ -112,11 +143,6 @@ public class PlayerInventory : MonoBehaviour
             default:
                 return 0;
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
