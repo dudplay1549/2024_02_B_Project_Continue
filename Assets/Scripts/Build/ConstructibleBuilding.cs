@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConstructibleBuilding : MonoBehaviour
 {
     [Header("Building Seetings")]
-    public BuildingTypes buildingType;                      //건물 타입 설정
+    public BuildingType buildingType;                      //건물 타입 설정
     public string buildingName;                             //건물 이름
     public int requiredTree = 5;                            //건물 건설에 필요한 나무 숫자
     public float constructionTime = 2.0f;                   //건물 건설 시간
